@@ -1,10 +1,13 @@
+import { BrowserRouter } from "react-router-dom";
+import { AllRouter } from "./components/AllRoutes/AllRoutes";
+
 function App() {
 
   return (
-    <>
-      <h1>ShopMall</h1>
-    </>
-  )
+    <BrowserRouter>
+      <AllRouter />
+    </BrowserRouter>
+  );
 }
 
 export default App

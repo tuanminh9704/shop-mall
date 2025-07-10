@@ -1,6 +1,7 @@
 import { FaFacebookF, FaTwitter, FaInstagram } from 'react-icons/fa';
+import type { FC } from 'react';
 
-export const Footer = () => {
+export const Footer: FC = () => {
   return (
     <footer className="bg-[#F5F6F7] py-6 border-t border-[#EBEBF0]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -9,7 +10,7 @@ export const Footer = () => {
           <div>
             <h3 className="text-lg font-semibold text-[#0D48A6] mb-4">Liên hệ</h3>
             <p className="text-sm text-[#38383D]">
-              Email: vuminh97abc@gamil.com<br />
+              Email: vuminh97abc@gmail.com<br />
               Hotline: 0559629178
             </p>
           </div>
@@ -53,7 +54,7 @@ export const Footer = () => {
           </div>
         </div>
         <div className="mt-6 text-center text-sm text-[#38383D]">
-          <p>&copy; 2025 tuanminh9704. All rights reserved.</p>
+          <p>© 2025 tuanminh9704. All rights reserved.</p>
         </div>
       </div>
     </footer>

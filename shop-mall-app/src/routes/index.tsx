@@ -1,4 +1,4 @@
-import { MainLayout } from '../components/Layouts/MainLayout';
+import { MainLayout } from '../components/Layouts/MainLayout.tsx';
 import { HomePage } from '../pages/HomePage';
 
 export const router = [
@@ -10,6 +10,9 @@ export const router = [
         index: true,
         element: <HomePage />,
       },
+      {
+        
+      }
     ],
   },
 ];

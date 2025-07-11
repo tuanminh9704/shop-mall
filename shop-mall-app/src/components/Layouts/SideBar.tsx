@@ -5,6 +5,9 @@ export const SideBar: FC = () => {
   const categories = [
     { name: "Điện Thoại - Máy Tính Bảng", icon: "📱" },
     { name: "Laptop - Máy Tính", icon: "💻" },
+    { name: "Laptop - Máy Tính", icon: "💻" },
+    { name: "Laptop - Máy Tính", icon: "💻" },
+    { name: "Laptop - Máy Tính", icon: "💻" },
   ];
 
   return (

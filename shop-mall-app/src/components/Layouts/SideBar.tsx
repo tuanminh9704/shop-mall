@@ -1,15 +1,21 @@
-import type { FC } from "react";
+import { useEffect, useState, type FC } from "react";
+import { getRootCategories } from "../../services/category";
+import type { Category } from "../../interfaces/categories";
 
 export const SideBar: FC = () => {
   const isOpen = true;
-  const categories = [
-    { name: "Điện Thoại - Máy Tính Bảng", icon: "📱" },
-    { name: "Laptop - Máy Tính", icon: "💻" },
-    { name: "Laptop - Máy Tính", icon: "💻" },
-    { name: "Laptop - Máy Tính", icon: "💻" },
-    { name: "Laptop - Máy Tính", icon: "💻" },
-  ];
-
+  const [rootCategories, setRootCategories] = useState<Category[]>([]);
+  useEffect(() => {
+    const fetchApi = async () => {
+      try {
+        const rootCategoriesData = await getRootCategories();
+        setRootCategories(rootCategoriesData);
+      } catch (error) {
+        console.log("[ERROR]: ", error);
+      }
+    };
+    fetchApi();
+  }, []);
   return (
     <div
       className={`left-0 w-64 bg-white shadow-md h-[calc(100vh-5rem)] p-4 z-40 transform transition-transform duration-300 ${
@@ -18,12 +24,16 @@ export const SideBar: FC = () => {
     >
       <h2 className="text-lg font-bold mb-4">Danh Mục Sản Phẩm</h2>
       <ul>
-        {categories.map((category, index) => (
+        {rootCategories.map((category, index) => (
           <li
             key={index}
             className="flex items-center p-2 hover:bg-gray-100 rounded cursor-pointer"
           >
-            <span className="mr-2 text-xl">{category.icon}</span>
+            <img
+              src={category.icon}
+              alt={category.name}
+              className="w-8 h-8 object-contain mr-2"
+            />
             <span className="text-sm">{category.name}</span>
           </li>
         ))}

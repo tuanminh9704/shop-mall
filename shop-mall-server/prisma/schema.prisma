@@ -32,6 +32,7 @@ model Product {
 model Category {
   id        Int        @id @default(autoincrement())
   name      String
+  icon      String     @default("") 
   hasChildrens Boolean @default(false)
 
   parentId  Int?

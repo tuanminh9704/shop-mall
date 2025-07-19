@@ -8,9 +8,9 @@ export const Header = () => {
           {/* Logo Section */}
           <div className="flex flex-col items-center">
             <a href="/">
-              <p className="text-xl font-bold text-[#0D48A6]">ShopMall</p>
+              <p className="text-4xl font-bold text-[#0D48A6]">ShopMall</p>
             </a>
-            <span className="text-xs text-[#0D48A6] font-medium mt-1">
+            <span className="text-xl text-[#0D48A6] font-medium mt-1">
               Tốt & Nhanh
             </span>
           </div>

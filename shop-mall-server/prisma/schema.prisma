@@ -32,6 +32,7 @@ model Product {
 model Category {
   id        Int        @id @default(autoincrement())
   name      String
+  hasChildrens Boolean @default(false)
 
   parentId  Int?
   parent    Category?  @relation("CategoryParent", fields: [parentId], references: [id])

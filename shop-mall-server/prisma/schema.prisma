@@ -22,6 +22,9 @@ model Product {
   category    Category         @relation(fields: [categoryId], references: [id])
   categoryId  Int
 
+  brand       Brand?           @relation(fields: [brandId], references: [id])
+  brandId     Int?
+
   images      ProductImage[]
   promotions  ProductPromotion[]
 
@@ -62,6 +65,16 @@ model ProductPromotion {
   promoPrice  Float
   startAt     DateTime
   endAt       DateTime
+}
+
+model Brand {
+  id        Int       @id @default(autoincrement())
+  name      String
+  title     String
+  logoUrl   String?  
+  isFeatured Boolean  @default(false)
+
+  products  Product[] 
 }
 
 enum PromotionType {

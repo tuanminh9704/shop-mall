@@ -22,7 +22,7 @@ export const SideBar: FC = () => {
         isOpen ? "translate-x-0" : "-translate-x-full"
       } md:translate-x-0`}
     >
-      <h2 className="text-lg font-bold mb-4">Danh Mục Sản Phẩm</h2>
+      <h2 className="text-[18px] font-bold mb-4">Danh Mục</h2>
       <ul>
         {rootCategories.map((category, index) => (
           <li

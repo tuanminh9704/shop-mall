@@ -9,4 +9,9 @@ export class ProductController {
   getAllProducts() {
     return this.productsService.getAllProducts();
   }
+
+  @Get('/promotion')
+  getFeatureProducts() {
+    return this.productsService.getFeatureProducts();
+  }
 }

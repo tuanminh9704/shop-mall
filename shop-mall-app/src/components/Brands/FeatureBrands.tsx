@@ -1,6 +1,6 @@
 import "swiper/css";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, A11y, EffectFade } from "swiper/modules";
+import { Navigation, A11y, EffectFade } from "swiper/modules";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
@@ -39,7 +39,7 @@ export const FeatureBrands = () => {
     <div className="mb-6 w-full">
       <div className="font-medium text-2xl mb-4">Thương hiệu nổi bật</div>
       <Swiper
-        modules={[Navigation, Pagination, A11y, EffectFade]}
+        modules={[Navigation, A11y, EffectFade]}
         spaceBetween={16}
         slidesPerView={4}
         navigation

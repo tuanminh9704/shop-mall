@@ -2,7 +2,7 @@ import type { FC } from "react";
 import { ProductCard } from "./ProductCard";
 import "swiper/css";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, A11y, EffectFade } from "swiper/modules";
+import { Navigation, A11y, EffectFade } from "swiper/modules";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
@@ -66,7 +66,7 @@ export const FeaturedProducts: FC = () => {
         TOP DEAL & SIÊU RẺ
       </h2>
       <Swiper
-        modules={[Navigation, Pagination, A11y, EffectFade]}
+        modules={[Navigation, A11y, EffectFade]}
         spaceBetween={16}
         slidesPerView={4}
         speed={800}

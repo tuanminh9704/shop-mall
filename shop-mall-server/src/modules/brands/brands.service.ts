@@ -1,18 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { Brand } from '@prisma/client';
 
 @Injectable()
-export class CategoriesService {
+export class BrandsService {
   constructor(private prisma: PrismaService) {}
 
-  getAllRootCategories = async () => {
+  getAllFeatureBrands = async (): Promise<Brand[]> => {
     try {
-      const rootCategories = await this.prisma.category.findMany({
-        where: {
-          parentId: null,
-        },
+      const featureBrands: Brand[] = await this.prisma.brand.findMany({
+        where: { isFeatured: true },
       });
-      return rootCategories;
+      return featureBrands;
     } catch (error) {
       console.log('[ERROR]: ', error);
       throw new Error('Internal Server Error!');

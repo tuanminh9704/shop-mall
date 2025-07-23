@@ -18,9 +18,6 @@ export const HomePage: FC = () => {
             <Banner />
             <FeaturedProducts />
             <FeatureBrands />
-            <FeatureBrands />
-            <FeatureBrands />
-            <FeatureBrands />
           </div>
         </main>
       </div>

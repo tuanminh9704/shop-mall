@@ -9,7 +9,7 @@ export const HomePage: FC = () => {
     <div className="flex justify-center min-h-screen w-full bg-[#F5F5FA] p-4">
       {/* wrapper giới hạn tổng width */}
       <div className="flex w-full max-w-[1400px] gap-5">
-        <aside className="w-64 shrink-0 sticky top-0 border-r border-[#EBEBF0] bg-white overflow-y-auto scrollbar-thin max-h-screen">
+        <aside className="w-64 shrink-0 sticky top-0 border-r border-[#EBEBF0] bg-white scrollbar-thin max-h-screen">
           <SideBar />
         </aside>
 
@@ -17,6 +17,9 @@ export const HomePage: FC = () => {
           <div className="mx-auto w-full max-w-[1400px] space-y-6">
             <Banner />
             <FeaturedProducts />
+            <FeatureBrands />
+            <FeatureBrands />
+            <FeatureBrands />
             <FeatureBrands />
           </div>
         </main>

@@ -18,11 +18,11 @@ export const SideBar: FC = () => {
   }, []);
   return (
     <div
-      className={`left-0 w-64 bg-white shadow-md h-[calc(100vh-5rem)] p-4 z-40 transform transition-transform duration-300 ${
+      className={`left-0 w-64 h-full bg-white shadow-md  p-4 z-40 transform transition-transform duration-300 ${
         isOpen ? "translate-x-0" : "-translate-x-full"
       } md:translate-x-0`}
     >
-      <h2 className="text-[18px] font-bold mb-4">Danh Mục</h2>
+      <h2 className="text-[16px] font-medium mb-4">Danh mục</h2>
       <ul>
         {rootCategories.map((category, index) => (
           <li

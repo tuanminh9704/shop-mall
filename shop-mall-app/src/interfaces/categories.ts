@@ -3,5 +3,6 @@ export interface Category {
     name: string,
     hasChildrens: boolean,
     icon: string,
+    slug: string,
     parentId: number,
 }

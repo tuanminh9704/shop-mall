@@ -1,18 +1,20 @@
-import { MainLayout } from '../components/Layouts/MainLayout.tsx';
-import { HomePage } from '../pages/HomePage';
+import { MainLayout } from "../components/Layouts/MainLayout.tsx";
+import { HomePage } from "../pages/HomePage";
+import { CategoryPage } from "../pages/CategoryPage.tsx";
 
 export const router = [
   {
-    path: '/',
+    path: "/",
     element: <MainLayout />,
     children: [
       {
-        index: true,
+        path: '/home',
         element: <HomePage />,
       },
       {
-        
-      }
+        path: ":slug/:categoryId",
+        element: <CategoryPage />,
+      },
     ],
   },
 ];

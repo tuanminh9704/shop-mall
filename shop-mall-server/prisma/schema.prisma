@@ -37,7 +37,7 @@ model Category {
   name      String
   icon      String     @default("") 
   hasChildrens Boolean @default(false)
-  slug      String
+  slug      String     @default("") 
 
   parentId  Int?
   parent    Category?  @relation("CategoryParent", fields: [parentId], references: [id])

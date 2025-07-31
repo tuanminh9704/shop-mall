@@ -18,4 +18,21 @@ export class CategoriesService {
       throw new Error('Internal Server Error!');
     }
   };
+
+  getCategoryWithChildrensById = async (id: number) => {
+    try {
+      const categoriesWithChilrens = await this.prisma.category.findMany({
+        where: {
+          id: +id,
+        },
+        include: {
+          children: true,
+        },
+      });
+      return categoriesWithChilrens;
+    } catch (error) {
+      console.log('[ERROR]: ', error);
+      throw new Error('Internal Server Error!');
+    }
+  };
 }

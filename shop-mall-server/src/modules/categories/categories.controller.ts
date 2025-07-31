@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
 
 @Controller('categories')
@@ -8,5 +8,10 @@ export class CategoriesController {
   @Get()
   getAllRootCategories() {
     return this.categoriesService.getAllRootCategories();
+  }
+
+  @Get(':id')
+  getCategoryWithChildrensById(@Param('id') id: number) {
+    return this.categoriesService.getCategoryWithChildrensById(id);
   }
 }

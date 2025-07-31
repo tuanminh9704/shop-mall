@@ -21,7 +21,7 @@ export class CategoriesService {
 
   getCategoryWithChildrensById = async (id: number) => {
     try {
-      const categoriesWithChilrens = await this.prisma.category.findMany({
+      const categoriesWithChilrens = await this.prisma.category.findFirst({
         where: {
           id: +id,
         },

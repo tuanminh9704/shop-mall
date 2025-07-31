@@ -5,4 +5,5 @@ export interface Category {
     icon: string,
     slug: string,
     parentId: number,
+    children: Category[],
 }

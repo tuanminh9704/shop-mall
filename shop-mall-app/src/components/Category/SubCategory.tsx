@@ -1,65 +1,16 @@
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import type { Category } from "../../interfaces/categories";
 
-export const SubCategory = () => {
+interface SubCategoryProps {
+  subCategories: Category[];
+}
+
+export const SubCategory = ({subCategories}: SubCategoryProps) => {
+  const navigate = useNavigate();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
-  const subCategories = [
-    {
-      name: "English Books",
-      childrens: [
-        {
-          name: "Art & Photography",
-        },
-        {
-          name: "Dictionary",
-        },
-      ],
-    },
-    {
-      name: "Sách tiếng việt",
-      childrens: [
-        {
-          name: "Sách văn học",
-        },
-        {
-          name: "Sách kinh tế",
-        },
-      ],
-    },
-    {
-      name: "Sách tiếng việt",
-      childrens: [
-        {
-          name: "Sách văn học",
-        },
-        {
-          name: "Sách kinh tế",
-        },
-      ],
-    },
-    {
-      name: "Sách tiếng việt",
-      childrens: [
-        {
-          name: "Sách văn học",
-        },
-        {
-          name: "Sách kinh tế",
-        },
-      ],
-    },
-    {
-      name: "Sách tiếng việt",
-      childrens: [
-        {
-          name: "Sách văn học",
-        },
-        {
-          name: "Sách kinh tế",
-        },
-      ],
-    },
-  ];
+
   const toggleArrow = (index: number) => {
     setOpenIndex((prev) => (prev === index ? null : index));
   };
@@ -77,7 +28,7 @@ export const SubCategory = () => {
               }`}
               onClick={() => toggleArrow(index)}
             >
-              <div className="text-[13px] font-medium p-3">
+              <div onClick={() => navigate(`/${subCategory.slug}/${subCategory.id}`)} className="text-[13px] font-medium p-3">
                 {subCategory.name}
               </div>
               <div className="p-4">
@@ -87,8 +38,12 @@ export const SubCategory = () => {
 
             {openIndex === index && (
               <div className="pl-6 pb-2 text-[12px] font-medium text-gray-600 border-b border-gray-200">
-                {subCategory.childrens.map((child, i) => (
-                  <div key={i} className="py-1 hover:underline">
+                {subCategory.children.map((child, i) => (
+                  <div
+                    onClick={() => navigate(`/${child.slug}/${child.id}`)}
+                    key={i}
+                    className="py-1 hover:underline"
+                  >
                     {child.name}
                   </div>
                 ))}

@@ -10,6 +10,11 @@ export class CategoriesController {
     return this.categoriesService.getAllRootCategories();
   }
 
+  @Get('/tree')
+  getAllCategoriesWithTree() {
+    return this.categoriesService.getAllCategoriesWithTree();
+  }
+
   @Get(':id')
   getCategoryWithChildrensById(@Param('id') id: number) {
     return this.categoriesService.getCategoryWithChildrensById(id);

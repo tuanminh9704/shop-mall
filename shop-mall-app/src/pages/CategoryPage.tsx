@@ -13,7 +13,7 @@ export const CategoryPage: FC = () => {
     const fetchData = async () => {
       try {
         const data = await getCategoryWithChildrenById(Number(categoryId));
-        setCategory(data);
+        setCategory(data[0]);
       } catch (err) {
         console.error("Error fetching category:", err);
       }
@@ -21,7 +21,6 @@ export const CategoryPage: FC = () => {
     fetchData();
   }, [categoryId]);
 
-  console.log(category);
 
   return (
     <div>

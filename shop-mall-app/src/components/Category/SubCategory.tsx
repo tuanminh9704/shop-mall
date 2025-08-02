@@ -24,7 +24,7 @@ export const SubCategory = ({ subCategories }: SubCategoryProps) => {
   };
   return (
     <div className="w-64 h-full bg-white rounded-md">
-      <div className="font-medium p-4 border-b border-gray-200">
+      <div className="font-medium p-4 rounded-md border-b border-gray-200">
         Khám phá theo danh mục
       </div>
       <div>

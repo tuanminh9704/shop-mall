@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import type { Category } from "../interfaces/categories";
 import { SubCategory } from "../components/Category/SubCategory";
 import { getCategoryWithChildrenById } from "../services/category";
+import { DiscoverCategories } from "../components/Discover/DiscoverCategories";
 
 export const CategoryPage: FC = () => {
   const { categoryId } = useParams();
@@ -21,16 +22,21 @@ export const CategoryPage: FC = () => {
     fetchData();
   }, [categoryId]);
 
-
   return (
-    <div>
-      <div>
-        <aside>
-          {category?.children && (
-            <SubCategory subCategories={category.children} />
-          )}{" "}
-        </aside>
-      </div>
+    <div className="flex">
+      <aside className="w-1/4 p-4">
+        {category?.children && (
+          <SubCategory subCategories={category.children} />
+        )}
+      </aside>
+      <main className="w-3/4 p-4">
+        <h2 className="text-3xl font-bold mb-4 bg-white rounded-md pt-4 pb-4 pl-3.5">
+          {category?.name}
+        </h2>
+        {category?.children && (
+          <DiscoverCategories subCategories={category.children} />
+        )}
+      </main>
     </div>
   );
 };

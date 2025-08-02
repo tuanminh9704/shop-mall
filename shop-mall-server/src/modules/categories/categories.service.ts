@@ -22,7 +22,7 @@ export class CategoriesService {
 
   getCategoryWithChildrensById = async (id: number) => {
     try {
-      const categoriesWithChilrens = await this.prisma.category.findFirst({
+      const categoriesWithChilrens = await this.prisma.category.findMany({
         where: {
           id: +id,
         },
@@ -30,7 +30,12 @@ export class CategoriesService {
           children: true,
         },
       });
-      return categoriesWithChilrens;
+      const result = await Promise.all(
+        categoriesWithChilrens.map((category) =>
+          this.getChildrenOfCategory(category),
+        ),
+      );
+      return result;
     } catch (error) {
       console.log('[ERROR]: ', error);
       throw new Error('Internal Server Error!');

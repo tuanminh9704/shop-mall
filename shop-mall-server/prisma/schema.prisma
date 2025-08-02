@@ -44,6 +44,7 @@ model Category {
   children  Category[] @relation("CategoryParent")
 
   products  Product[]
+  banners   Banner[]
 }
 
 model ProductImage {
@@ -79,6 +80,27 @@ model Brand {
   updatedAt   DateTime @updatedAt
 
   products  Product[] 
+}
+
+model Banner {
+  id          Int       @id @default(autoincrement())
+  title       String
+  imageUrl    String
+  type        BannerType
+  categoryId  Int?      
+  category    Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+
+  displayOrder Int      @default(0)
+  isActive     Boolean  @default(true)
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+enum BannerType {
+  HOMEPAGE
+  CATEGORY
+  PROMOTION
 }
 
 enum PromotionType {

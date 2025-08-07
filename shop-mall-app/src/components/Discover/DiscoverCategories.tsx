@@ -6,8 +6,6 @@ interface SubCategoryProps {
 
 export const DiscoverCategories = ({subCategories} : SubCategoryProps) => {
 
-  console.log('subCategories===', subCategories);
-
   return (
     <div className="bg-white rounded-lg p-4">
       <h3 className="text-lg font-semibold mb-4">Khám phá theo danh mục</h3>

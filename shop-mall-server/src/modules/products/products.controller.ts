@@ -22,4 +22,9 @@ export class ProductController {
   ) {
     return this.productsService.getProductsByCategory(categoryId, brandId);
   }
+
+  @Get(':id')
+  getDetailProduct(@Param('id') productId: number) {
+    return this.productsService.getDetailProductById(productId);
+  }
 }

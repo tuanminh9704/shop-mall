@@ -45,6 +45,12 @@ const categoriesData = [
 ];
 
 const seed = async () => {
+  await prisma.variantInventory.deleteMany();
+  await prisma.warehouses.deleteMany();
+  await prisma.variantOptionValue.deleteMany();
+  await prisma.productVariant.deleteMany();
+  await prisma.productOptionValue.deleteMany();
+  await prisma.productOption.deleteMany();
   await prisma.productPromotion.deleteMany();
   await prisma.productImage.deleteMany();
   await prisma.product.deleteMany();
@@ -60,12 +66,7 @@ const seed = async () => {
   });
 
   for (const item of categoriesData) {
-    await prisma.category.create({
-      data: {
-        ...item,
-        hasChildrens: true,
-      },
-    });
+    await prisma.category.create({ data: { ...item, hasChildrens: true } });
   }
 
   await prisma.category.createMany({
@@ -97,6 +98,7 @@ const seed = async () => {
       isFeatured: true,
     },
   });
+
   const imageList = [
     {
       title: 'Luật đất đai',
@@ -118,43 +120,120 @@ const seed = async () => {
     },
   ];
 
-  await Promise.all(
-    imageList.map((item, index) =>
-      prisma.product.create({
-        data: {
-          name: item.title,
-          description: `Sách: ${item.title} – mô tả chi tiết về nội dung và chất lượng.`,
-          price: 180000 + index * 20000,
-          brandId: brand.id,
-          categoryId: childCategories[index % childCategories.length].id,
-          images: {
-            create: [
-              {
-                imageUrl: item.main,
-                isMain: true,
-                order: 1,
-              },
-              {
-                imageUrl: item.extra,
-                isMain: false,
-                order: 2,
-              },
-            ],
-          },
-          promotions: {
-            create: {
-              type: PromotionType.FLASH_SALE,
-              promoPrice: 140000 + index * 20000,
-              startAt: new Date(),
-              endAt: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000),
-            },
+  for (const [index, item] of imageList.entries()) {
+    const product = await prisma.product.create({
+      data: {
+        name: item.title,
+        description: `Sách: ${item.title} – mô tả chi tiết về nội dung và chất lượng.`,
+        brandId: brand.id,
+        categoryId: childCategories[index % childCategories.length].id,
+        images: {
+          create: [
+            { imageUrl: item.main, isMain: true, order: 1 },
+            { imageUrl: item.extra, isMain: false, order: 2 },
+          ],
+        },
+        promotions: {
+          create: {
+            type: PromotionType.FLASH_SALE,
+            promoPrice: 140000 + index * 20000,
+            startAt: new Date(),
+            endAt: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000),
           },
         },
-      }),
-    ),
-  );
+        productOption: {
+          create: [
+            {
+              name: 'Bìa',
+              position: 1,
+              values: {
+                create: [
+                  { value: 'Bìa cứng', position: 1 },
+                  { value: 'Bìa mềm', position: 2 },
+                ],
+              },
+            },
+            {
+              name: 'Ngôn ngữ',
+              position: 2,
+              values: {
+                create: [
+                  { value: 'Tiếng Việt', position: 1 },
+                  { value: 'Tiếng Anh', position: 2 },
+                ],
+              },
+            },
+          ],
+        },
+      },
+      include: { productOption: { include: { values: true } } },
+    });
 
-  console.log('Seeded successfully!');
+    const [coverHard, coverSoft] = product.productOption[0].values;
+    const [langVN, langEN] = product.productOption[1].values;
+
+    const variant1 = await prisma.productVariant.create({
+      data: {
+        price: '150000',
+        sku: `BOOK-${index + 1}-HARD-VN`,
+        imageUrl: item.main,
+        stock: 20,
+        productId: product.id,
+        variantOptionValue: {
+          create: [
+            { optionValueId: coverHard.id },
+            { optionValueId: langVN.id },
+          ],
+        },
+      },
+    });
+
+    const variant2 = await prisma.productVariant.create({
+      data: {
+        price: '160000',
+        sku: `BOOK-${index + 1}-SOFT-EN`,
+        imageUrl: item.extra,
+        stock: 15,
+        productId: product.id,
+        variantOptionValue: {
+          create: [
+            { optionValueId: coverSoft.id },
+            { optionValueId: langEN.id },
+          ],
+        },
+      },
+    });
+
+    await prisma.warehouses.create({
+      data: {
+        name: `Kho Hà Nội`,
+        address: 'Số 1 Tràng Tiền',
+        city: 'Hà Nội',
+        province: 'Hà Nội',
+        country: 'Việt Nam',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        variantInventory: {
+          create: [
+            {
+              variantId: variant1.id,
+              stockQuantity: 20,
+              updatedAt: new Date(),
+            },
+            {
+              variantId: variant2.id,
+              stockQuantity: 15,
+              updatedAt: new Date(),
+            },
+          ],
+        },
+      },
+    });
+  }
+
+  console.log(
+    'Seeded successfully with product options, variants, and inventory!',
+  );
 };
 
 seed().catch((err) => {

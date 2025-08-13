@@ -85,6 +85,69 @@ export class ProductsService {
     }
   };
 
+  getDetailProductById = async (productId: number) => {
+    try {
+      if (!productId) {
+        throw new Error('ProductId is invalid!');
+      }
+      const product = await this.prisma.product.findFirst({
+        where: {
+          id: +productId,
+        },
+        include: {
+          images: {
+            select: {
+              imageUrl: true,
+            },
+          },
+          productOption: {
+            select: {
+              id: true,
+              productId: true,
+              name: true,
+              position: true,
+              values: true,
+            },
+          },
+          productVariant: {
+            select: {
+              id: true,
+              price: true,
+              sku: true,
+              imageUrl: true,
+              stock: true,
+              productId: true,
+              VariantInventory: {
+                select: {
+                  id: true,
+                  stockQuantity: true,
+                  warehouse: {
+                    select: {
+                      id: true,
+                      name: true,
+                      address: true,
+                      city: true,
+                      province: true,
+                      country: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      });
+      console.log('product====', product);
+      if (!product) {
+        throw new Error('Product is not found!');
+      }
+      return product;
+    } catch (error) {
+      console.log('[ERROR]: ', error);
+      throw new Error('Internal Server Error!');
+    }
+  };
+
   private async getAllDescendantCategoryIds(
     categoryId: number,
   ): Promise<number[]> {

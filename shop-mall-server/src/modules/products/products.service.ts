@@ -63,4 +63,50 @@ export class ProductsService {
       throw new Error('Internal Server Error!');
     }
   };
+
+  getProductsByCategory = async (categoryId: number, brandId?: number) => {
+    try {
+      const allCategoryIds = await this.getAllDescendantCategoryIds(categoryId);
+      const [products] = await Promise.all([
+        this.prisma.product.findMany({
+          where: {
+            categoryId: {
+              in: allCategoryIds,
+            },
+          },
+          include: {
+            images: true,
+          },
+        }),
+      ]);
+      return products;
+    } catch (error) {
+      console.log('[ERROR]: ', error);
+      throw new Error('Internal Server Error!');
+    }
+  };
+
+  private async getAllDescendantCategoryIds(
+    categoryId: number,
+  ): Promise<number[]> {
+    const result: number[] = [];
+    const stack = [+categoryId];
+
+    while (stack.length > 0) {
+      const currentId = stack.pop();
+      if (currentId === undefined) continue;
+
+      result.push(currentId);
+
+      const children = await this.prisma.category.findMany({
+        where: { parentId: +currentId },
+      });
+
+      for (const child of children) {
+        stack.push(child.id);
+      }
+    }
+
+    return result;
+  }
 }

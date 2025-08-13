@@ -18,7 +18,6 @@ model Product {
   id          Int              @id @default(autoincrement())
   name        String
   description String?
-  price       Float
   category    Category         @relation(fields: [categoryId], references: [id])
   categoryId  Int
 
@@ -27,6 +26,8 @@ model Product {
 
   images      ProductImage[]
   promotions  ProductPromotion[]
+  productOption ProductOption[]
+  productVariant  ProductVariant[]
 
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
@@ -95,6 +96,75 @@ model Banner {
 
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+}
+
+model ProductOption {
+  id        Int       @id @default(autoincrement())
+  product   Product   @relation(fields: [productId], references: [id])
+  productId Int
+  name      String
+  position  Int
+
+  values    ProductOptionValue[]
+}
+
+model ProductOptionValue {
+  id           Int           @id @default(autoincrement())
+  option       ProductOption @relation(fields: [productOptionId], references: [id])
+  productOptionId Int
+  value        String   
+  position     Int?
+
+  variantOpriionValue VariantOptionValue[]
+}
+
+
+model ProductVariant {
+  id           Int           @id @default(autoincrement())
+  price     String
+  sku       String
+  imageUrl  String 
+  stock     Int 
+
+  product     Product          @relation(fields: [productId], references: [id])
+  productId   Int
+
+  variantOptionValue VariantOptionValue[]
+  VariantInventory   VariantInventory[] 
+
+}
+model VariantOptionValue {
+  id                 Int                @id @default(autoincrement())
+  variant            ProductVariant     @relation(fields: [variantId], references: [id])
+  variantId          Int
+  optionValue        ProductOptionValue @relation(fields: [optionValueId], references: [id])
+  optionValueId      Int
+}
+
+model Warehouses {
+  id                  Int                @id @default(autoincrement())
+  name                String
+  address             String
+  city                String
+  province            String
+  country             String
+  createdAt           DateTime
+  updatedAt           DateTime
+  
+  variantInventory  VariantInventory[] 
+}
+
+model VariantInventory {
+  id                  Int                @id @default(autoincrement())
+
+  variantId           Int
+  variant            ProductVariant     @relation(fields: [variantId], references: [id])
+
+  warehouseId       Int
+  warehouse         Warehouses          @relation(fields: [warehouseId], references: [id])
+
+  stockQuantity     Int
+  updatedAt         DateTime
 }
 
 enum BannerType {

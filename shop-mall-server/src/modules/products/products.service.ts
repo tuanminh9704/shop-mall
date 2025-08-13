@@ -42,7 +42,6 @@ export class ProductsService {
           product: {
             select: {
               name: true,
-              price: true,
               images: {
                 where: {
                   isMain: true,

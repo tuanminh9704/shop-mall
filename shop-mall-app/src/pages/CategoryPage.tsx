@@ -9,6 +9,7 @@ import { getCategoryWithChildrenById } from "../services/category";
 import { DiscoverCategories } from "../components/Discover/DiscoverCategories";
 import { GridProduct } from "../components/GridProduct/GridProduct";
 import { getProductByCategory } from "../services/product";
+import { SortBar } from "../components/SortBar/SortBar";
 
 export const CategoryPage: FC = () => {
   const { categoryId } = useParams();
@@ -47,6 +48,10 @@ export const CategoryPage: FC = () => {
         {hasChildren && (
           <DiscoverCategories subCategories={category.children} />
         )}
+
+        <div className="mt-5">
+          <SortBar />
+        </div>
         <div className="mt-5">
           <GridProduct products={products || []}/>
         </div>

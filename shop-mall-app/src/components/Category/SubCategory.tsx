@@ -23,7 +23,7 @@ export const SubCategory = ({ subCategories }: SubCategoryProps) => {
     });
   };
   return (
-    <div className="w-64 h-full bg-white rounded-md">
+    <div className="w-75 bg-white rounded-md">
       <div className="font-medium p-4 rounded-md border-b border-gray-200">
         Khám phá theo danh mục
       </div>
@@ -31,7 +31,7 @@ export const SubCategory = ({ subCategories }: SubCategoryProps) => {
         {subCategories.map((subCategory, index) => (
           <div key={index}>
             <div
-              className={`flex items-center justify-between cursor-pointer hover:bg-gray-100 ${
+              className={`flex items-center justify-between cursor-pointer ${
                 !openIndices.has(index) ? "border-b border-gray-200" : ""
               }`}
               onClick={() => toggleArrow(index)}

@@ -5,6 +5,7 @@ import type { Category } from "../interfaces/categories";
 import { SubCategory } from "../components/Category/SubCategory";
 import { getCategoryWithChildrenById } from "../services/category";
 import { DiscoverCategories } from "../components/Discover/DiscoverCategories";
+import { GridProduct } from "../components/GridProduct/GridProduct";
 
 export const CategoryPage: FC = () => {
   const { categoryId } = useParams();
@@ -38,6 +39,9 @@ export const CategoryPage: FC = () => {
         {hasChildren && (
           <DiscoverCategories subCategories={category.children} />
         )}
+        <div className="mt-5">
+          <GridProduct />
+        </div>
       </main>
     </div>
   );

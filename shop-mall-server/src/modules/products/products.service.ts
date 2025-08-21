@@ -75,6 +75,23 @@ export class ProductsService {
           },
           include: {
             images: true,
+            productVariant: {
+              select: {
+                price: true,
+                imageUrl: true,
+                sku: true,
+                stock: true,
+              }
+            },
+            productOption: {
+              select: {
+                id: true,
+                productId: true,
+                name: true,
+                position: true,
+                values: true,
+              },
+            },
           },
         }),
       ]);

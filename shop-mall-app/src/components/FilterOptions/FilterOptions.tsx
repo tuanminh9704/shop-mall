@@ -48,7 +48,7 @@ export const FilterBar: React.FC = () => {
           overflowX: "auto",
           scrollbarWidth: "none",
           gap: 8,
-          padding: "0 40px", // chừa chỗ cho nút
+          padding: "0 40px",
         }}
       >
         <Space>

@@ -10,18 +10,21 @@ import { DiscoverCategories } from "../components/Discover/DiscoverCategories";
 import { GridProduct } from "../components/GridProduct/GridProduct";
 import { getProductByCategory } from "../services/product";
 import { SortBar } from "../components/SortBar/SortBar";
+import { useSearchParams } from "react-router-dom";
 
 export const CategoryPage: FC = () => {
   const { categoryId } = useParams();
   const [category, setCategory] = useState<Category | null>(null);
   const [products, setProducts] = useState<Product[] | null>(null);
+  const [searchParams] = useSearchParams();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const sortBy = searchParams.get('sortBy') || "";
+        const order = searchParams.get('order') || "";
         const data = await getCategoryWithChildrenById(Number(categoryId));
-        const productRecords = await getProductByCategory(Number(categoryId));
-        console.log(productRecords);
+        const productRecords = await getProductByCategory(Number(categoryId), sortBy, order);
         setCategory(data[0]);
         setProducts(productRecords);
       } catch (err) {
@@ -29,7 +32,7 @@ export const CategoryPage: FC = () => {
       }
     };
     fetchData();
-  }, [categoryId]);
+  }, [categoryId, searchParams]);
 
 
   const hasChildren = category?.children && category.children.length > 0;
@@ -50,7 +53,7 @@ export const CategoryPage: FC = () => {
         )}
 
         <div className="mt-5">
-          <SortBar />
+          <SortBar/>
         </div>
         <div className="mt-5">
           <GridProduct products={products || []}/>

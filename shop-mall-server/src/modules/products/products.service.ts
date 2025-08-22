@@ -71,11 +71,11 @@ export class ProductsService {
   ) => {
     try {
       const allCategoryIds = await this.getAllDescendantCategoryIds(categoryId);
-      let orderBy: any = undefined;
+      let orderBy = {};
 
       if (sortBy) {
         if (sortBy === 'ctime') {
-          orderBy = { createdAt: 'desc' };
+          orderBy = { createdAt: order };
         } else {
           orderBy = { [sortBy]: order };
         }
@@ -87,6 +87,7 @@ export class ProductsService {
               in: allCategoryIds,
             },
           },
+          ...(orderBy && { orderBy }),
           include: {
             images: true,
             productVariant: {
@@ -106,7 +107,6 @@ export class ProductsService {
               },
             },
           },
-          ...(orderBy && { orderBy }),
         }),
       ]);
       return products;

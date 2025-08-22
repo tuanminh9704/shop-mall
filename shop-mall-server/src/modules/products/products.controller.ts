@@ -19,8 +19,10 @@ export class ProductController {
   getProductsByCategory(
     @Param('id') categoryId: number,
     @Query('brandId') brandId?: number,
-  ) {
-    return this.productsService.getProductsByCategory(categoryId, brandId);
+    @Query('sortBy') sortBy?: string,
+    @Query('order') order?: string
+    ) {
+    return this.productsService.getProductsByCategory(categoryId, brandId, sortBy, order);
   }
 
   @Get(':id')

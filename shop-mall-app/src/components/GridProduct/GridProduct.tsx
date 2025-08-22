@@ -1,13 +1,10 @@
 import type { Product } from "../../interfaces/products";
 
-import { getPriceRange } from "../../utils/getRangePrice";
-
 export const GridProduct = ({ products }: { products: Product[] }) => {
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
       {products.map((product: Product) => {
         const mainImage = product.images.find((img) => img.isMain)?.imageUrl;
-        const priceRange = getPriceRange(product);
 
         return (
           <div key={product.id} className="bg-[#FFFFFF]">
@@ -21,7 +18,7 @@ export const GridProduct = ({ products }: { products: Product[] }) => {
               </div>
               <div className="p-3">
                 <div className="text-[#FF4C57] text-[18px] font-medium">
-                  {priceRange}
+                  {product.price}đ
                 </div>
                 <h3>{product.name}</h3>
               </div>

@@ -63,9 +63,23 @@ export class ProductsService {
     }
   };
 
-  getProductsByCategory = async (categoryId: number, brandId?: number) => {
+  getProductsByCategory = async (
+    categoryId: number,
+    brandId?: number,
+    sortBy?: string,
+    order?: string,
+  ) => {
     try {
       const allCategoryIds = await this.getAllDescendantCategoryIds(categoryId);
+      let orderBy: any = undefined;
+
+      if (sortBy) {
+        if (sortBy === 'ctime') {
+          orderBy = { createdAt: 'desc' };
+        } else {
+          orderBy = { [sortBy]: order };
+        }
+      }
       const [products] = await Promise.all([
         this.prisma.product.findMany({
           where: {
@@ -77,11 +91,10 @@ export class ProductsService {
             images: true,
             productVariant: {
               select: {
-                price: true,
                 imageUrl: true,
                 sku: true,
                 stock: true,
-              }
+              },
             },
             productOption: {
               select: {
@@ -93,6 +106,7 @@ export class ProductsService {
               },
             },
           },
+          ...(orderBy && { orderBy }),
         }),
       ]);
       return products;
@@ -129,7 +143,6 @@ export class ProductsService {
           productVariant: {
             select: {
               id: true,
-              price: true,
               sku: true,
               imageUrl: true,
               stock: true,
@@ -154,7 +167,6 @@ export class ProductsService {
           },
         },
       });
-      console.log('product====', product);
       if (!product) {
         throw new Error('Product is not found!');
       }

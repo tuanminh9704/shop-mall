@@ -142,8 +142,8 @@ model Warehouses {
   name        String
   address     String
 
-  province    Province   @relation(fields: [provinceId], references: [id])
-  provinceId  Int
+  province    Province?   @relation(fields: [provinceId], references: [id])
+  provinceId  Int?    
 
   country     String
   createdAt   DateTime

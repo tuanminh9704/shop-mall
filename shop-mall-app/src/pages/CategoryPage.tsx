@@ -11,6 +11,7 @@ import { GridProduct } from "../components/GridProduct/GridProduct";
 import { getProductByCategory } from "../services/product";
 import { SortBar } from "../components/SortBar/SortBar";
 import { useSearchParams } from "react-router-dom";
+import { FilterSearch } from "../components/FilterSearch/FilterSearch";
 
 export const CategoryPage: FC = () => {
   const { categoryId } = useParams();
@@ -39,9 +40,18 @@ export const CategoryPage: FC = () => {
 
   return (
     <div className="flex">
-      {hasChildren && (
+      {(
         <aside className="w-1/4 p-4">
-          <SubCategory subCategories={category.children} />
+          {
+            hasChildren && (
+              <div className="mb-5">
+                <SubCategory subCategories={category.children} />
+              </div>
+            )
+          }
+          <div>
+            <FilterSearch />
+          </div>
         </aside>
       )}
       <main className={`${hasChildren ? "w-3/4" : "w-full"} p-4`}>

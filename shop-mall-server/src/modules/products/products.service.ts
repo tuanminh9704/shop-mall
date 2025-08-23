@@ -156,7 +156,6 @@ export class ProductsService {
                       id: true,
                       name: true,
                       address: true,
-                      city: true,
                       province: true,
                       country: true,
                     },

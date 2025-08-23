@@ -1,43 +1,66 @@
 import type { Province } from "../../interfaces/provinces";
 import type { Brand } from "../../interfaces/brands";
 
-import { FilterOutlined } from "@ant-design/icons";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { getAllProvinces } from "../../services/provinces";
-import { FilterSection } from "./FilterSection";
 import { getAllBrands } from "../../services/brand";
+import { FilterSection } from "./FilterSection";
+import { useSearchParams } from "react-router-dom";
 
 export const FilterSearch = () => {
   const [provinces, setProvinces] = useState<Province[]>([]);
   const [brands, setBrands] = useState<Brand[]>([]);
 
+  const [selectedProvinces, setSelectedProvinces] = useState<number[]>([]);
+  const [selectedBrands, setSelectedBrands] = useState<number[]>([]);
+
   const [showMoreProvince, setShowMoreProvince] = useState(false);
   const [showMoreBrand, setShowMoreBrand] = useState(false);
 
+  const [,setSearchParams] = useSearchParams();
+
+  // this useEffect function catch with change of button show more
   useEffect(() => {
     const fetchApi = async () => {
-      try {
-        const provinceRecords = await getAllProvinces();
-        setProvinces(
-          showMoreProvince ? provinceRecords : provinceRecords.slice(0, 4)
-        );
+      const provinceRecords = await getAllProvinces();
+      setProvinces(
+        showMoreProvince ? provinceRecords : provinceRecords.slice(0, 4)
+      );
 
-        const brandRecords = await getAllBrands();
-        setBrands(showMoreBrand ? brandRecords : brandRecords.slice(0, 4));
-      } catch (error) {
-        console.log("[ERROR]: ", error);
-      }
+      const brandRecords = await getAllBrands();
+      setBrands(showMoreBrand ? brandRecords : brandRecords.slice(0, 4));
     };
     fetchApi();
   }, [showMoreProvince, showMoreBrand]);
 
+  useEffect(() => {
+    const params: Record<string, string> = {};
+
+    if (selectedProvinces.length > 0) {
+      params.provinces = selectedProvinces.join(",");
+    }
+
+    if (selectedBrands.length > 0) {
+      params.brands = selectedBrands.join(",");
+    }
+
+    setSearchParams(params); 
+  }, [selectedProvinces, selectedBrands, setSearchParams]);
+
+  const handleProvinceChange = (id: number) => {
+    setSelectedProvinces((prev) =>
+      prev.includes(id) ? prev.filter((pid) => pid !== id) : [...prev, id]
+    );
+  };
+
+  const handleBrandChange = (id: number) => {
+    setSelectedBrands((prev) =>
+      prev.includes(id) ? prev.filter((bid) => bid !== id) : [...prev, id]
+    );
+  };
+
   return (
     <div className="p-4 w-75 bg-[#FFFFFF] rounded-md">
-      <div className="flex items-center mb-3">
-        <FilterOutlined className="mr-2 text-xl align-middle" />
-        <span className="font-bold">BỘ LỌC TÌM KIẾM</span>
-      </div>
-
       <FilterSection
         title="Nơi Bán"
         length={provinces.length}
@@ -48,7 +71,11 @@ export const FilterSearch = () => {
           provinces.map((province) => (
             <div key={province.id}>
               <label className="flex items-center gap-2">
-                <input type="checkbox" />
+                <input
+                  type="checkbox"
+                  checked={selectedProvinces.includes(province.id)}
+                  onChange={() => handleProvinceChange(province.id)}
+                />
                 {province.name}
               </label>
             </div>
@@ -57,17 +84,22 @@ export const FilterSearch = () => {
           <p>Chưa tìm thấy tỉnh hoặc thành phố nào</p>
         )}
       </FilterSection>
+
       <FilterSection
-        title="Nơi Bán"
+        title="Thương Hiệu"
         length={brands.length}
-        showMore={showMoreProvince}
+        showMore={showMoreBrand}
         toggleShowMore={() => setShowMoreBrand((prev) => !prev)}
       >
         {brands.length ? (
           brands.map((brand) => (
             <div key={brand.id}>
               <label className="flex items-center gap-2">
-                <input type="checkbox" />
+                <input
+                  type="checkbox"
+                  checked={selectedBrands.includes(brand.id)}
+                  onChange={() => handleBrandChange(brand.id)}
+                />
                 {brand.name}
               </label>
             </div>

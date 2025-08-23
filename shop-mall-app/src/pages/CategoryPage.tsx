@@ -22,10 +22,24 @@ export const CategoryPage: FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const sortBy = searchParams.get('sortBy') || "";
-        const order = searchParams.get('order') || "";
+        const sortBy = searchParams.get("sortBy") || "";
+        const order = searchParams.get("order") || "";
+        const provincesParam = searchParams.get("provinces");
+        const provinces = provincesParam
+          ? provincesParam.split(",").map((id) => Number(id))
+          : [];
+
+        const brandsParam = searchParams.get("brands");
+        const brands = brandsParam
+          ? brandsParam.split(",").map((id) => Number(id))
+          : [];
         const data = await getCategoryWithChildrenById(Number(categoryId));
-        const productRecords = await getProductByCategory(Number(categoryId), sortBy, order);
+        const productRecords = await getProductByCategory(Number(categoryId), {
+          sortBy,
+          order,
+          provinces,
+          brands,
+        });
         setCategory(data[0]);
         setProducts(productRecords);
       } catch (err) {
@@ -35,25 +49,22 @@ export const CategoryPage: FC = () => {
     fetchData();
   }, [categoryId, searchParams]);
 
-
   const hasChildren = category?.children && category.children.length > 0;
 
   return (
     <div className="flex">
-      {(
+      {
         <aside className="w-1/4 p-4">
-          {
-            hasChildren && (
-              <div className="mb-5">
-                <SubCategory subCategories={category.children} />
-              </div>
-            )
-          }
+          {hasChildren && (
+            <div className="mb-5">
+              <SubCategory subCategories={category.children} />
+            </div>
+          )}
           <div>
-            <FilterSearch />
+            <FilterSearch/>
           </div>
         </aside>
-      )}
+      }
       <main className={`${hasChildren ? "w-3/4" : "w-full"} p-4`}>
         <h2 className="text-3xl font-bold mb-4 bg-white rounded-md pt-4 pb-4 pl-3.5">
           {category?.name}
@@ -63,10 +74,10 @@ export const CategoryPage: FC = () => {
         )}
 
         <div className="mt-5">
-          <SortBar/>
+          <SortBar />
         </div>
         <div className="mt-5">
-          <GridProduct products={products || []}/>
+          <GridProduct products={products || []} />
         </div>
       </main>
     </div>

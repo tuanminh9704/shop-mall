@@ -70,8 +70,10 @@ export class ProductsService {
     order?: string,
     provinces?: string,
     brands?: string,
+    page: number = 1,
   ) => {
     try {
+      const pageSize = 10;
       const allCategoryIds = await this.getAllDescendantCategoryIds(categoryId);
       let orderBy = {};
       const brandIds = brands
@@ -90,7 +92,9 @@ export class ProductsService {
           orderBy = { [sortBy]: order };
         }
       }
-      const [products] = await Promise.all([
+      const skip = (page - 1) * pageSize;
+
+      const [products, total] = await Promise.all([
         this.prisma.product.findMany({
           where: {
             categoryId: {
@@ -108,6 +112,8 @@ export class ProductsService {
               : {}),
           },
           ...(orderBy && { orderBy }),
+          skip: skip,
+          take: pageSize,
           include: {
             images: true,
             productVariant: {
@@ -128,8 +134,18 @@ export class ProductsService {
             },
           },
         }),
+
+        this.prisma.product.count(),
       ]);
-      return products;
+      return {
+        data: products,
+        pagination: {
+          total: total,
+          page: page,
+          pageSize: pageSize,
+          totalPages: Math.ceil(total / pageSize),
+        },
+      };
     } catch (error) {
       console.log('[ERROR]: ', error);
       throw new Error('Internal Server Error!');

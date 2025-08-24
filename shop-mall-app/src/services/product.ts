@@ -8,14 +8,17 @@ export const getProductByCategory = async (
     order?: string;
     provinces?: number[];
     brands?: number[];
+    page?: string
   }
 ) => {
-  const { sortBy, order, provinces, brands } = options;
+  const { sortBy, order, provinces, brands, page } = options;
 
   const query = new URLSearchParams();
 
   if (sortBy) query.append("sortBy", sortBy);
   if (order) query.append("order", order);
+  if (page) query.append("page", page);
+
   if (provinces && provinces.length > 0) {
     query.append("provinces", provinces.join(","));
   }

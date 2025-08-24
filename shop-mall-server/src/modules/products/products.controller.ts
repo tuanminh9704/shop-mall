@@ -1,4 +1,11 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  Query,
+  DefaultValuePipe,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { ProductsService } from './products.service';
 
 @Controller('products')
@@ -23,6 +30,7 @@ export class ProductController {
     @Query('order') order?: string,
     @Query('provinces') provinces?: string,
     @Query('brands') brands?: string,
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
   ) {
     return this.productsService.getProductsByCategory(
       categoryId,
@@ -31,6 +39,7 @@ export class ProductController {
       order,
       provinces,
       brands,
+      page,
     );
   }
 

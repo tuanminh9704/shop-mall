@@ -12,19 +12,29 @@ import { getProductByCategory } from "../services/product";
 import { SortBar } from "../components/SortBar/SortBar";
 import { useSearchParams } from "react-router-dom";
 import { FilterSearch } from "../components/FilterSearch/FilterSearch";
+import { PaginationSection } from "../components/Pagination/PagiantionSection";
 
 export const CategoryPage: FC = () => {
   const { categoryId } = useParams();
   const [category, setCategory] = useState<Category | null>(null);
   const [products, setProducts] = useState<Product[] | null>(null);
   const [searchParams] = useSearchParams();
-
+  const [pagination, setPagination] = useState<{
+    total: number;
+    page: number;
+    pageSize: number;
+  }>({
+    total: 0,
+    page: 1,
+    pageSize: 10,
+  });
   useEffect(() => {
     const fetchData = async () => {
       try {
         const sortBy = searchParams.get("sortBy") || "";
         const order = searchParams.get("order") || "";
         const provincesParam = searchParams.get("provinces");
+        const page = searchParams.get("page")?.toString();
         const provinces = provincesParam
           ? provincesParam.split(",").map((id) => Number(id))
           : [];
@@ -34,14 +44,16 @@ export const CategoryPage: FC = () => {
           ? brandsParam.split(",").map((id) => Number(id))
           : [];
         const data = await getCategoryWithChildrenById(Number(categoryId));
-        const productRecords = await getProductByCategory(Number(categoryId), {
+        const records = await getProductByCategory(Number(categoryId), {
           sortBy,
           order,
           provinces,
           brands,
-        },);
+          page
+        });
         setCategory(data[0]);
-        setProducts(productRecords);
+        setProducts(records.data);
+        setPagination(records.pagination);
       } catch (err) {
         console.error("Error fetching category:", err);
       }
@@ -50,7 +62,7 @@ export const CategoryPage: FC = () => {
   }, [categoryId, searchParams]);
 
   const hasChildren = category?.children && category.children.length > 0;
-
+  console.log('products====', products);
   return (
     <div className="flex">
       {
@@ -61,7 +73,7 @@ export const CategoryPage: FC = () => {
             </div>
           )}
           <div>
-            <FilterSearch/>
+            <FilterSearch />
           </div>
         </aside>
       }
@@ -78,6 +90,9 @@ export const CategoryPage: FC = () => {
         </div>
         <div className="mt-5">
           <GridProduct products={products || []} />
+        </div>
+        <div className="mt-5">
+          <PaginationSection pagination={pagination} />
         </div>
       </main>
     </div>

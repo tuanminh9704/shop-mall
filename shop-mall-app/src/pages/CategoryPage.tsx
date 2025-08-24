@@ -39,7 +39,7 @@ export const CategoryPage: FC = () => {
           order,
           provinces,
           brands,
-        });
+        },);
         setCategory(data[0]);
         setProducts(productRecords);
       } catch (err) {

@@ -17,7 +17,7 @@ export const FilterSearch = () => {
   const [showMoreProvince, setShowMoreProvince] = useState(false);
   const [showMoreBrand, setShowMoreBrand] = useState(false);
 
-  const [,setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   // this useEffect function catch with change of button show more
   useEffect(() => {
@@ -34,17 +34,21 @@ export const FilterSearch = () => {
   }, [showMoreProvince, showMoreBrand]);
 
   useEffect(() => {
-    const params: Record<string, string> = {};
+    const params = Object.fromEntries(searchParams.entries());
 
     if (selectedProvinces.length > 0) {
       params.provinces = selectedProvinces.join(",");
+    } else {
+      delete params.provinces; // delete it if this on is empty
     }
 
     if (selectedBrands.length > 0) {
       params.brands = selectedBrands.join(",");
+    } else {
+      delete params.brands;
     }
 
-    setSearchParams(params); 
+    setSearchParams(params);
   }, [selectedProvinces, selectedBrands, setSearchParams]);
 
   const handleProvinceChange = (id: number) => {

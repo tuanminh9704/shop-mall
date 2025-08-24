@@ -21,12 +21,16 @@ export class ProductController {
     @Query('brandId') brandId?: number,
     @Query('sortBy') sortBy?: string,
     @Query('order') order?: string,
+    @Query('provinces') provinceIds?: number[],
+    @Query('brands') brandIds?: number[],
   ) {
     return this.productsService.getProductsByCategory(
       categoryId,
       brandId,
       sortBy,
       order,
+      provinceIds,
+      brandIds,
     );
   }
 

@@ -68,6 +68,8 @@ export class ProductsService {
     brandId?: number,
     sortBy?: string,
     order?: string,
+    provinces?: number[],
+    brands?: number[],
   ) => {
     try {
       const allCategoryIds = await this.getAllDescendantCategoryIds(categoryId);

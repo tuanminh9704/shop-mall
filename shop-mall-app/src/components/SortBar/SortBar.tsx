@@ -5,13 +5,18 @@ import { useSearchParams } from "react-router-dom";
 export const SortBar = () => {
   const [buttonSelected, setButtonSelected] = useState<any>(SORT_BUTTONS[0]);
   const [priceSort, setPriceSort] = useState("");
-  const [, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const handleSort = (option: any) => {
     const { sortBy, order } = option.value;
     setPriceSort("");
     setButtonSelected(option);
-    setSearchParams({ sortBy, order });
+
+    const params = Object.fromEntries(searchParams.entries());
+    params.sortBy = sortBy;
+    params.order = order;
+
+    setSearchParams(params);
   };
 
   const handlePriceSort = (order: string) => {

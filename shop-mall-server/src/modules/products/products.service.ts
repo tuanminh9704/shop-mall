@@ -68,12 +68,20 @@ export class ProductsService {
     brandId?: number,
     sortBy?: string,
     order?: string,
-    provinces?: number[],
-    brands?: number[],
+    provinces?: string,
+    brands?: string,
   ) => {
     try {
       const allCategoryIds = await this.getAllDescendantCategoryIds(categoryId);
       let orderBy = {};
+      const brandIds = brands
+        ?.split(',')
+        .map((brandId: string) => Number(brandId))
+        .filter((id) => !isNaN(id));
+
+      const provinceIds = provinces
+        ?.split(',')
+        .map((province: string) => Number(province));
 
       if (sortBy) {
         if (sortBy === 'ctime') {
@@ -88,6 +96,16 @@ export class ProductsService {
             categoryId: {
               in: allCategoryIds,
             },
+            ...(brandIds?.length ? { brandId: { in: brandIds } } : {}),
+            ...(provinceIds?.length
+              ? {
+                  seller: {
+                    provinceId: {
+                      in: provinceIds,
+                    },
+                  },
+                }
+              : {}),
           },
           ...(orderBy && { orderBy }),
           include: {

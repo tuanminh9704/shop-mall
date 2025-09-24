@@ -7,14 +7,29 @@ import {
   ParseIntPipe,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
+import { RedisService } from 'src/redis/cache.service';
+import { CacheKey } from '@nestjs/cache-manager';
 
 @Controller('products')
 export class ProductController {
-  constructor(private readonly productsService: ProductsService) {}
+  constructor(
+    private readonly productsService: ProductsService,
+    private readonly cacheService: RedisService,
+  ) {}
 
   @Get()
-  getAllProducts() {
-    return this.productsService.getAllProducts();
+  @CacheKey('products-redis')
+  async getAllProducts() {
+    const productsCache = (await this.cacheService.get(
+      'products-redis',
+    )) as string;
+
+    if (productsCache) {
+      return productsCache;
+    }
+    const products = await this.productsService.getAllProducts();
+    await this.cacheService.set('products-redis', products, '1m');
+    return products;
   }
 
   @Get('/promotion')

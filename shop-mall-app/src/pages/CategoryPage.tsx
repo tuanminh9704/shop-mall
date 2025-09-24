@@ -62,7 +62,7 @@ export const CategoryPage: FC = () => {
   }, [categoryId, searchParams]);
 
   const hasChildren = category?.children && category.children.length > 0;
-  console.log('products====', products);
+  
   return (
     <div className="flex">
       {

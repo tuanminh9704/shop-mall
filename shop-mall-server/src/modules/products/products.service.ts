@@ -167,6 +167,13 @@ export class ProductsService {
               imageUrl: true,
             },
           },
+          brand: {
+            select: {
+              id: true,
+              name: true,
+              logoUrl: true,
+            },
+          },
           productOption: {
             select: {
               id: true,

@@ -1,4 +1,5 @@
 import type { Product } from "../../interfaces/products";
+import { Link } from "react-router-dom";
 
 export const GridProduct = ({ products }: { products: Product[] }) => {
   return (
@@ -8,7 +9,7 @@ export const GridProduct = ({ products }: { products: Product[] }) => {
 
         return (
           <div key={product.id} className="bg-[#FFFFFF]">
-            <a href="">
+            <Link to={`/${product.slug}?id=${product.id}`}>
               <div className="w-full h-60 overflow-hidden rounded-md">
                 <img
                   className="w-full h-full object-cover"
@@ -25,7 +26,7 @@ export const GridProduct = ({ products }: { products: Product[] }) => {
               <div className="inline-block border border-[#E5E7EB] rounded-md px-3 py-1 text-[#8A8A93] text-sm">
                 {product.productOption.length} Phân loại
               </div>
-            </a>
+            </Link>
           </div>
         );
       })}

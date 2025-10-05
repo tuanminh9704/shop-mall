@@ -28,3 +28,7 @@ export const getProductByCategory = async (
 
   return await get(`products/by-category/${id}?${query.toString()}`);
 };
+
+export const getProductById = async (id: number) => {
+  return await get(`products/${id}`);
+}

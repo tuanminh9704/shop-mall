@@ -1,6 +1,7 @@
 import { MainLayout } from "../components/Layouts/MainLayout.tsx";
 import { HomePage } from "../pages/HomePage";
 import { CategoryPage } from "../pages/CategoryPage.tsx";
+import { ProductDetail } from "../pages/ProductDetail.tsx";
 
 export const router = [
   {
@@ -15,6 +16,10 @@ export const router = [
         path: ":slug/:categoryId",
         element: <CategoryPage />,
       },
+      {
+        path: ":slug",
+        element: <ProductDetail />,
+      }
     ],
   },
 ];

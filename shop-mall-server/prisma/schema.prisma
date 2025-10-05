@@ -23,6 +23,8 @@ model Product {
   seller      Seller?          @relation(fields: [sellerId], references: [id])
   sellerId    Int?
 
+  slug        String?           @unique
+
   images      ProductImage[]
   promotions  ProductPromotion[]
   productOption ProductOption[]

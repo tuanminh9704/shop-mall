@@ -3,6 +3,12 @@ export interface Product {
     name: string,
     price: string,
     description: string,
+    slug: string,
+    brand: {
+        id: number,
+        name: string,
+        logoUrl: string,
+    },
     images: [
         {
             id: number,

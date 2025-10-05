@@ -1,65 +1,21 @@
 import type { FC } from "react";
-import type { Product } from "../interfaces/products";
-import type { Category } from "../interfaces/categories";
 
 import { useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
 import { SubCategory } from "../components/Category/SubCategory";
-import { getCategoryWithChildrenById } from "../services/category";
 import { DiscoverCategories } from "../components/Discover/DiscoverCategories";
 import { GridProduct } from "../components/GridProduct/GridProduct";
-import { getProductByCategory } from "../services/product";
 import { SortBar } from "../components/SortBar/SortBar";
 import { useSearchParams } from "react-router-dom";
 import { FilterSearch } from "../components/FilterSearch/FilterSearch";
 import { PaginationSection } from "../components/Pagination/PagiantionSection";
+import { useCategoryWithProducts } from "../hooks/useCategoryWithProducts";
 
 export const CategoryPage: FC = () => {
   const { categoryId } = useParams();
-  const [category, setCategory] = useState<Category | null>(null);
-  const [products, setProducts] = useState<Product[] | null>(null);
-  const [searchParams] = useSearchParams();
-  const [pagination, setPagination] = useState<{
-    total: number;
-    page: number;
-    pageSize: number;
-  }>({
-    total: 0,
-    page: 1,
-    pageSize: 10,
-  });
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const sortBy = searchParams.get("sortBy") || "";
-        const order = searchParams.get("order") || "";
-        const provincesParam = searchParams.get("provinces");
-        const page = searchParams.get("page")?.toString();
-        const provinces = provincesParam
-          ? provincesParam.split(",").map((id) => Number(id))
-          : [];
 
-        const brandsParam = searchParams.get("brands");
-        const brands = brandsParam
-          ? brandsParam.split(",").map((id) => Number(id))
-          : [];
-        const data = await getCategoryWithChildrenById(Number(categoryId));
-        const records = await getProductByCategory(Number(categoryId), {
-          sortBy,
-          order,
-          provinces,
-          brands,
-          page
-        });
-        setCategory(data[0]);
-        setProducts(records.data);
-        setPagination(records.pagination);
-      } catch (err) {
-        console.error("Error fetching category:", err);
-      }
-    };
-    fetchData();
-  }, [categoryId, searchParams]);
+  const [searchParams] = useSearchParams();
+  const { category, products, pagination } = useCategoryWithProducts(Number(categoryId), searchParams);
+
 
   const hasChildren = category?.children && category.children.length > 0;
   

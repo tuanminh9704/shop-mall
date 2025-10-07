@@ -24,6 +24,16 @@ export interface Product {
             sku: string,
             imageUrl: string,
             stock: number,
+            variantOptionValue: [
+                {
+                    optionValue: {
+                        id: number,
+                        productOptionId: number,
+                        value: string,
+                        position: number,
+                    }
+                }
+            ]
         }
     ],
     productOption: [

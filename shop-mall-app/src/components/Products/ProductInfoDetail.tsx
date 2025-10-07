@@ -2,9 +2,15 @@ import type { Product } from "../../interfaces/products";
 
 interface ProductDetailProps {
   productDetail: Product | null;
+  selectedOption?: any | null;
+  onSelectOption?: (optionId: number, value: any) => void;
 }
 
-export const ProductInfoDetail = ({ productDetail }: ProductDetailProps) => {
+export const ProductInfoDetail = ({
+  productDetail,
+  selectedOption,
+  onSelectOption
+}: ProductDetailProps) => {
   return (
     <div>
       <div className="bg-white p-6 rounded-xl shadow-sm">
@@ -17,11 +23,25 @@ export const ProductInfoDetail = ({ productDetail }: ProductDetailProps) => {
             <div className="mt-4" key={option.id}>
               <h3 className="text-[16px] font-[500] mb-2">{option.name}</h3>
               <div>
-                {option.values.map((value) => (
-                  <button className="mr-4 border border-gray-300 px-4 py-2 rounded-xl shadow-sm hover:border-blue-600 transition">
-                    {value.value}
-                  </button>
-                ))}
+                {option.values.map((value) => {
+                  const isSelected = selectedOption?.some(
+                    (opt: any) => opt.optionValue?.id === value.id
+                  );
+                  return (
+                    <button
+                      key={value.id}
+                      onClick={() => onSelectOption?.(option.id, value)}
+                      className={`mr-4 border px-2 py-1 rounded-xl shadow-sm transition 
+        ${
+          isSelected
+            ? "border-blue-600 text-blue-800"
+            : "border-gray-300 hover:border-blue-600"
+        }`}
+                    >
+                      {value.value}
+                    </button>
+                  );
+                })}
               </div>
             </div>
           ))}

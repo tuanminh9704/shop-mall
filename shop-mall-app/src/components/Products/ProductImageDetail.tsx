@@ -3,15 +3,16 @@ interface Image {
 }
 
 interface ProductDetailImageProps {
+  imageMain?: string;
   images: Image[];
 }
 
-export const ProductDetailImage = ({images}: ProductDetailImageProps) => {
+export const ProductDetailImage = ({images, imageMain}: ProductDetailImageProps) => {
   return (
     <div>
       <div className="p-2 border border-gray-200 rounded-lg">
         <img
-          src={images ? images[0]?.imageUrl : ""}
+          src={imageMain}
           alt=""
           className="w-full h-auto rounded-lg"
         />

@@ -190,6 +190,11 @@ export class ProductsService {
               imageUrl: true,
               stock: true,
               productId: true,
+              variantOptionValue: {
+                select: {
+                  optionValue: true,
+                },
+              },
               VariantInventory: {
                 select: {
                   id: true,

@@ -1,11 +1,47 @@
 import { FaStar } from "react-icons/fa";
 import type { Product } from "../../interfaces/products";
+import { useEffect, useState } from "react";
 
 interface ProductDetailProps {
   productDetail: Product | null;
+  selectedOption?: any | null;
+  selectedVariant?: any | null;
 }
 
-export const ProductByBoxDetail = ({productDetail}: ProductDetailProps) => {
+export const ProductByBoxDetail = ({
+  productDetail,
+  selectedOption,
+  selectedVariant,
+}: ProductDetailProps) => {
+  const [quantity, setQuantity] = useState<string>("1");
+  const [totalPrice, setTotalPrice] = useState<number>(0);
+
+  useEffect(() => {
+    if (quantity) {
+      const numQty = Number(quantity);
+      setTotalPrice(Number(productDetail?.price || 0) * numQty);
+    }
+  }, [quantity, productDetail]);
+
+  const handleDecrease = () => {
+    setQuantity((prev) => {
+      const num = Number(prev) || 1;
+      return num > 1 ? String(num - 1) : "1";
+    });
+  };
+  const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (value === "" || /^\d+$/.test(value)) {
+      setQuantity(value);
+    }
+  };
+
+  const handleIncrease = () => {
+    setQuantity((prev) => {
+      const num = Number(prev) || 0;
+      return String(num + 1);
+    });
+  };
   return (
     <div className="bg-white">
       <div className="flex items-center gap-10 border-b border-gray-100 p-4">
@@ -35,31 +71,45 @@ export const ProductByBoxDetail = ({productDetail}: ProductDetailProps) => {
       <div className="p-4">
         <div className="flex items-center gap-4">
           <img
-            src="https://salt.tikicdn.com/cache/280x280/ts/product/54/35/2e/11beabb454181c78ba269ad1496cdeb5.jpg.webp"
-            alt=""
+            src={selectedVariant?.imageUrl || ""}
+            alt="Ảnh sản phẩm"
             className="w-16 h-16 object-contain"
           />
-          <span className="text-[16px] font-[400]">2XL, Xanh Đen</span>
+          <span className="text-[16px] font-[400]">
+            {selectedOption
+              ? selectedOption
+                  .map((opt: any) => opt.optionValue?.value)
+                  .join(", ")
+              : productDetail?.name}
+          </span>
         </div>
 
         <div className="mt-4">
           <h3 className="text-[16px] font-[500] mb-2">Số lượng</h3>
           <div className="flex items-center gap-3">
-            <button className="w-8 h-8 flex items-center justify-center border border-gray-300 rounded hover:bg-gray-100 transition">
+            <button
+              className="w-8 h-8 flex items-center justify-center border border-gray-300 rounded hover:bg-gray-100 transition"
+              onClick={handleDecrease}
+            >
               –
             </button>
 
             <input
               type="text"
+              value={quantity}
+              onChange={handleQuantityChange}
               className="w-12 h-8 text-center border border-gray-300 rounded outline-none focus:border-blue-500"
             />
-            <button className="w-8 h-8 flex items-center justify-center border border-gray-300 rounded hover:bg-gray-100 transition">
+            <button
+              className="w-8 h-8 flex items-center justify-center border border-gray-300 rounded hover:bg-gray-100 transition"
+              onClick={handleIncrease}
+            >
               +
             </button>
           </div>
           <div className="mt-4">
             <span className="text-[16px] font-[500]">Tạm Tính</span>
-            <p className="text-2xl font-bold">655.000₫</p>
+            <p className="text-2xl font-bold">{totalPrice}₫</p>
           </div>
           <div className="mt-4">
             <button className="bg-[#FF424E] text-white w-full p-3 rounded-sm cursor-pointer mb-4 text-[18px]">
@@ -68,7 +118,7 @@ export const ProductByBoxDetail = ({productDetail}: ProductDetailProps) => {
             <button className="text-[#297BFF] w-full p-3 rounded-sm cursor-pointer mb-4 text-[18px] border border-[#297BFF]">
               Thêm vào giỏ hàng
             </button>
-            <button className="text-[#297BFF] w-full p-3 rounded-sm cursor-pointer text-[18px] border border-[#297BFF]" >
+            <button className="text-[#297BFF] w-full p-3 rounded-sm cursor-pointer text-[18px] border border-[#297BFF]">
               Mua trước trả sau
             </button>
           </div>

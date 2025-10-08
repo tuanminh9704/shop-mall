@@ -217,7 +217,44 @@ export class ProductsService {
       if (!product) {
         throw new Error('Product is not found!');
       }
-      return product;
+      const specifications = [
+        {
+          name: 'Thông tin chi tiết',
+          attributes: [
+            product.brand?.name && {
+              code: 'brand',
+              name: 'Thương hiệu',
+              value: product.brand.name,
+            },
+            {
+              code: 'isWarranty',
+              name: 'Sản phẩm có được bảo hành không?',
+              value: product.isWarranty ? 'Có' : 'Không',
+            },
+          ].filter(Boolean),
+        },
+      ];
+      const relatedProducts = await this.prisma.product.findMany({
+        where: {
+          categoryId: product.categoryId,
+          NOT: {
+            id: product.id,
+          },
+        },
+        take: 8,
+        include: {
+          images: {
+            select: {
+              imageUrl: true,
+            },
+          },
+        },
+      });
+      return {
+        product,
+        specifications,
+        relatedProducts,
+      };
     } catch (error) {
       console.log('[ERROR]: ', error);
       throw new Error('Internal Server Error!');

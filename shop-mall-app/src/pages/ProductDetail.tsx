@@ -10,14 +10,14 @@ export const ProductDetail = () => {
 
   const { productDetail, selectedOption, selectedVariant, handleSelectOption } =
     useByBoxDetailWithProduct(productId);
-
+  // console.log('selectedVariant==== ', selectedVariant)
   return (
     <div className="max-w-7xl-auto px-4 py-8">
-      <div className="grid grid-cols-10 gap-6">
+      <div className="grid grid-cols-10 gap-6 items-start">
         <div className="col-span-3 bg-white p-4 rounded-xl shadow-sm">
           <ProductDetailImage
             imageMain={selectedVariant?.imageUrl}
-            images={productDetail?.images ?? []}
+            images={productDetail?.product.images ?? []}
           />
         </div>
 
@@ -26,6 +26,7 @@ export const ProductDetail = () => {
             productDetail={productDetail}
             selectedOption={selectedOption}
             onSelectOption={handleSelectOption}
+            selectedVariant={selectedVariant}
           />
         </div>
 

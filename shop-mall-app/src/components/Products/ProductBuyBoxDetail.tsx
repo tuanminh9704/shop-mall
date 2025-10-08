@@ -19,7 +19,7 @@ export const ProductByBoxDetail = ({
   useEffect(() => {
     if (quantity) {
       const numQty = Number(quantity);
-      setTotalPrice(Number(productDetail?.price || 0) * numQty);
+      setTotalPrice(Number(productDetail?.product?.price || 0) * numQty);
     }
   }, [quantity, productDetail]);
 
@@ -47,14 +47,14 @@ export const ProductByBoxDetail = ({
       <div className="flex items-center gap-10 border-b border-gray-100 p-4">
         <div>
           <img
-            src={productDetail?.brand?.logoUrl}
+            src={productDetail?.product?.brand?.logoUrl}
             alt=""
             className="w-12 h-12 object-contain rounded-full"
           />
         </div>
         <div>
           <span className="font-medium text-gray-800">
-            {productDetail?.brand?.name}
+            {productDetail?.product?.brand?.name}
           </span>
           <div className="flex items-center gap-2 mt-1">
             <div className="flex items-center gap-1 text-yellow-500">
@@ -80,7 +80,7 @@ export const ProductByBoxDetail = ({
               ? selectedOption
                   .map((opt: any) => opt.optionValue?.value)
                   .join(", ")
-              : productDetail?.name}
+              : productDetail?.product?.name}
           </span>
         </div>
 

@@ -1,55 +1,89 @@
 export interface Product {
-    id: number,
-    name: string,
-    price: string,
-    description: string,
-    slug: string,
+  product: {
+    id: number;
+    name: string;
+    price: string;
+    description: string;
+    isWarranty: boolean;
+    slug: string;
     brand: {
-        id: number,
-        name: string,
-        logoUrl: string,
-    },
+      id: number;
+      name: string;
+      logoUrl: string;
+    };
     images: [
-        {
-            id: number,
-            imageUrl: string,
-            isMain: boolean,
-            order: number,
-            productId: number,
-        }        
-    ],
+      {
+        id: number;
+        imageUrl: string;
+        isMain: boolean;
+        order: number;
+        productId: number;
+      }
+    ];
     productVariant: [
-        {
-            price: string,
-            sku: string,
-            imageUrl: string,
-            stock: number,
-            variantOptionValue: [
-                {
-                    optionValue: {
-                        id: number,
-                        productOptionId: number,
-                        value: string,
-                        position: number,
-                    }
-                }
-            ]
-        }
-    ],
+      {
+        price: string;
+        sku: string;
+        imageUrl: string;
+        stock: number;
+        variantOptionValue: [
+          {
+            optionValue: {
+              id: number;
+              productOptionId: number;
+              value: string;
+              position: number;
+            };
+          }
+        ];
+      }
+    ];
     productOption: [
+      {
+        id: number;
+        productId: number;
+        name: string;
+        position: number;
+        values: [
+          {
+            id: number;
+            productOptionId: number;
+            value: string;
+            position: number;
+          }
+        ];
+      }
+    ];
+  };
+  specifications: [
+    {
+      name: string;
+      attributes: [
         {
-            id: number,
-            productId: number,
-            name: string,
-            position: number,
-            values: [
-                {
-                    id: number,
-                    productOptionId: number,
-                    value: string,
-                    position: number,
-                }
-            ]
+          code: string;
+          name: string;
+          value: string;
         }
-    ]
+      ];
+    }
+  ];
+  relatedProducts: [
+    {
+      id: number;
+      name: string;
+      price: string;
+      description: string;
+      isWarranty: boolean;
+      slug: string;
+      images: [
+        {
+          id: number;
+          imageUrl: string;
+          isMain: boolean;
+          order: number;
+          productId: number;
+        }
+      ];
+    }
+  ];
 }

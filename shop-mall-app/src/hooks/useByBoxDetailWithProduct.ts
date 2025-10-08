@@ -14,8 +14,8 @@ export const useByBoxDetailWithProduct = (productId: string | null) => {
         const productDetailData: Product = await getProductById(Number(productId));
         setProductsDetail(productDetailData);
 
-        if (productDetailData.productVariant.length > 0) {
-          const firstVariant = productDetailData.productVariant[0];
+        if (productDetailData?.product.productVariant.length > 0) {
+          const firstVariant = productDetailData?.product.productVariant[0];
           setSelectedOption(firstVariant.variantOptionValue);
           setSelectedVariant(firstVariant);
         }
@@ -25,11 +25,14 @@ export const useByBoxDetailWithProduct = (productId: string | null) => {
     };
     fetchData();
   }, [productId]);
+  // console.log('selectedVariant', selectedVariant);
+  // console.log('selectedOption', selectedOption);
+  // console.log('productDetail', productDetail);
 
   useEffect(() => {
     if (!productDetail || !selectedOption) return;
 
-    const matchVariant = productDetail.productVariant.find((variant) => {
+    const matchVariant = productDetail?.product.productVariant.find((variant) => {
       if (!variant.variantOptionValue) return false;
 
       const variantOptionIds = variant.variantOptionValue.map(

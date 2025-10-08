@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Product } from '@prisma/client';
+import { buildBreadcrum } from 'src/utils/buildBreadcrum';
 
 @Injectable()
 export class ProductsService {
@@ -250,10 +251,18 @@ export class ProductsService {
           },
         },
       });
+
+      const breadCrumb = await buildBreadcrum(
+        this.prisma,
+        Number(product.categoryId),
+        true,
+        product.name,
+      );
       return {
         product,
         specifications,
         relatedProducts,
+        breadCrumb,
       };
     } catch (error) {
       console.log('[ERROR]: ', error);

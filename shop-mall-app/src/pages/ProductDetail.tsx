@@ -3,16 +3,26 @@ import { ProductInfoDetail } from "../components/Products/ProductInfoDetail";
 import { ProductByBoxDetail } from "../components/Products/ProductBuyBoxDetail";
 import { useByBoxDetailWithProduct } from "../hooks/useByBoxDetailWithProduct";
 import { useSearchParams } from "react-router-dom";
+import { BreadCrumb } from "../components/BreadCrumb/BreadCrumb";
 
 export const ProductDetail = () => {
   const [searchParams] = useSearchParams();
   const productId = searchParams.get("id");
 
-  const { productDetail, selectedOption, selectedVariant, handleSelectOption } =
-    useByBoxDetailWithProduct(productId);
-  // console.log('selectedVariant==== ', selectedVariant)
+  const {
+    productDetail,
+    selectedOption,
+    selectedVariant,
+    handleSelectOption,
+    breadCrumb,
+  } = useByBoxDetailWithProduct(productId);
+
+  console.log(breadCrumb);
   return (
-    <div className="max-w-7xl-auto px-4 py-8">
+    <div className="max-w-7xl-auto px-4">
+      <div>
+        <BreadCrumb breadCrumb={breadCrumb}/>
+      </div>
       <div className="grid grid-cols-10 gap-6 items-start">
         <div className="col-span-3 bg-white p-4 rounded-xl shadow-sm">
           <ProductDetailImage

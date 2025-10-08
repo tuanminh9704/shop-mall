@@ -86,4 +86,10 @@ export interface Product {
       ];
     }
   ];
+  breadCrumb: [
+    {
+      categoryId: number;
+      categoryName: string;
+    }
+  ]
 }

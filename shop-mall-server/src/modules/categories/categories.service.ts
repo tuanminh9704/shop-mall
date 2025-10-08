@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CategoryWithChildren, Category } from './dto/category';
+import { buildBreadcrum } from 'src/utils/buildBreadcrum';
 
 @Injectable()
 export class CategoriesService {
@@ -35,7 +36,11 @@ export class CategoriesService {
           this.getChildrenOfCategory(category),
         ),
       );
-      return result;
+      const breadCrumb = await buildBreadcrum(this.prisma, Number(id));
+      return {
+        categories: result,
+        breadCrumb,
+      };
     } catch (error) {
       console.log('[ERROR]: ', error);
       throw new Error('Internal Server Error!');

@@ -28,7 +28,7 @@ export const Banner: FC = () => {
           }
         }
         speed={800}
-        navigation
+        // navigation
         pagination={{ clickable: true }}
       >
         {banners.map((item, index) => (
